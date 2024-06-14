@@ -1,4 +1,4 @@
 Chess game day 1 
 
 
-react js seted pawn and diagnol attack
+react js set pawn and diagnol attack
