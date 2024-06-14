@@ -107,6 +107,7 @@ export default function Board() {
       }
     }
   
+    //Bishop movement
     if ((piece.type === 'Bbishop' || piece.type === 'Wbishop') && Math.abs(x - piece.x) === Math.abs(y - piece.y)) {
       const deltaX = x > piece.x ? 1 : -1;
       const deltaY = y > piece.y ? 1 : -1;
@@ -133,38 +134,7 @@ export default function Board() {
       }
     }
   
-    // Queen movement
-    if ((piece.type === 'Bqueen' || piece.type === 'Wqueen') && ((x === piece.x || y === piece.y) || (Math.abs(x - piece.x) === Math.abs(y - piece.y)))) {
-      const [startX, endX, startY, endY] = x === piece.x ? [piece.x, piece.x, Math.min(y, piece.y), Math.max(y, piece.y)] : [Math.min(x, piece.x), Math.max(x, piece.x), piece.y, piece.y];
-      for (let i = startX + 1; i < endX; i++) {
-        if (chessBoard[i][piece.y] !== null) {
-          return false;
-        }
-      }
-      for (let j = startY + 1; j < endY; j++) {
-        if (chessBoard[piece.x][j] !== null) {
-          return false;
-        }
-      }
-      // Check diagonal movement for queen
-      if (Math.abs(x - piece.x) === Math.abs(y - piece.y)) {
-        const deltaX = x > piece.x ? 1 : -1;
-        const deltaY = y > piece.y ? 1 : -1;
-        let currentX = piece.x + deltaX;
-        let currentY = piece.y + deltaY;
-        while (currentX !== x && currentY !== y) {
-          if (chessBoard[currentX][currentY] !== null) {
-            return false;
-          }
-          currentX += deltaX;
-          currentY += deltaY;
-        }
-      }
-      // Ensure target square is either empty or occupied by an opponent's piece
-      if (chessBoard[x][y] === null || chessBoard[x][y].type[0] !== piece.type[0]) {
-        return true;
-      }
-    }
+    
   
     return false;
   };
@@ -176,7 +146,7 @@ export default function Board() {
     const PieceComponent = {
       Bpawn, Wpawn, Brook, Wrook, Bbishop, Wbishop, Bknight, Wknight, Wqueen, Bqueen, Wking, Bking
     }[piece.type];
-    return <PieceComponent x={x} y={y} onClick={() => handlePieceClick(x, y)} />;
+    return <PieceComponent  x={x} y={y} onClick={() => handlePieceClick(x, y)} />;
   };
 
   return (
@@ -198,8 +168,10 @@ export default function Board() {
                       display: 'flex',
                       justifyContent: 'center',
                       alignItems: 'center',
-                      height: '80px',
-                      width: '80px',
+                      height: 'calc(100vw / 8)', // Set height based on viewport width
+                      width: 'calc(100vw / 8)',  // Set width based on viewport width
+                      maxWidth: '80px',          // Limit maximum width to 80px
+                      maxHeight: '80px',         // Limit maximum height to 80px
                     }}
                     onClick={() => handlePieceClick(rIndex, cIndex)}
                   >
