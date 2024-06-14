@@ -19,7 +19,6 @@ export default function Board() {
   const [chessBoard, setChessBoard] = useState([]);
   const [selectedPiece, setSelectedPiece] = useState(null);
 
-  
   useEffect(() => {
     const result = [];
     for (let i = 0; i < n; i++) {
@@ -31,18 +30,27 @@ export default function Board() {
       result[1][i] = { type: 'Bpawn', x: 1, y: i };
       result[6][i] = { type: 'Wpawn', x: 6, y: i };
     }
-    // Initialize other pieces...
-    result[0][0] = result[0][7] = { type: 'Brook', x: 0, y: 0 };
-    result[7][0] = result[7][7] = { type: 'Wrook', x: 7, y: 0 };
-    result[0][1] = result[0][6] = { type: 'Bknight', x: 0, y: 1 };
-    result[7][1] = result[7][6] = { type: 'Wknight', x: 7, y: 1 };
-    result[0][2] = result[0][5] = { type: 'Bbishop', x: 0, y: 2 };
-    result[7][2] = result[7][5] = { type: 'Wbishop', x: 7, y: 2 };
+    // Initialize rooks
+    result[0][0] = { type: 'Brook', x: 0, y: 0 };
+    result[0][7] = { type: 'Brook', x: 0, y: 7 };
+    result[7][0] = { type: 'Wrook', x: 7, y: 0 };
+    result[7][7] = { type: 'Wrook', x: 7, y: 7 };
+    // Initialize other pieces
+    result[0][1] = { type: 'Bknight', x: 0, y: 1 };
+    result[0][6] = { type: 'Bknight', x: 0, y: 6 };
+    result[7][1] = { type: 'Wknight', x: 7, y: 1 };
+    result[7][6] = { type: 'Wknight', x: 7, y: 6 };
+    
+    result[0][2] = { type: 'Bbishop', x: 0, y: 2 };
+    result[0][5] = { type: 'Bbishop', x: 0, y: 5 };
+    result[7][2] = { type: 'Wbishop', x: 7, y: 2 };
+    result[7][5] = { type: 'Wbishop', x: 7, y: 5 };
+    
     result[0][3] = { type: 'Bqueen', x: 0, y: 3 };
     result[0][4] = { type: 'Bking', x: 0, y: 4 };
     result[7][3] = { type: 'Wqueen', x: 7, y: 3 };
     result[7][4] = { type: 'Wking', x: 7, y: 4 };
-
+  
     setChessBoard(result);
   }, []);
   
@@ -66,46 +74,109 @@ export default function Board() {
   };
 
   const isMoveValid = (piece, x, y) => {
-    
+    // Pawn movement
+    if (piece.type === 'Bpawn' && x === piece.x + 2 && y === piece.y && chessBoard[x][y] === null && piece.x === 1) {
+      return true;
+    }
+    if (piece.type === 'Wpawn' && x === piece.x - 2 && y === piece.y && chessBoard[x][y] === null && piece.x === 6) {
+      return true;
+    }
+    if (piece.type === 'Bpawn' && x === piece.x + 1 && y === piece.y && chessBoard[x][y] === null) {
+      return true;
+    }
+    if (piece.type === 'Wpawn' && x === piece.x - 1 && y === piece.y && chessBoard[x][y] === null) {
+      return true;
+    }
+    if (piece.type === 'Wpawn' && ((x === piece.x - 1 && y === piece.y + 1) || (x === piece.x - 1 && y === piece.y - 1)) && chessBoard[x][y] !== null && chessBoard[x][y].type[0] === 'B') {
+      return true;
+    }
+    if (piece.type === 'Bpawn' && ((x === piece.x + 1 && y === piece.y + 1) || (x === piece.x + 1 && y === piece.y - 1)) && chessBoard[x][y] !== null && chessBoard[x][y].type[0] === 'W') {
+      return true;
+    }
   
-     if(piece.type === 'Bpawn' && x === piece.x + 2 && y ===piece.y && chessBoard[x][y]==null && piece.x===1)
-     {
+    // Rook movement
+    if ((piece.type === 'Brook' || piece.type === 'Wrook') && (x === piece.x || y === piece.y)) {
+      const [start, end] = x === piece.x ? [Math.min(y, piece.y), Math.max(y, piece.y)] : [Math.min(x, piece.x), Math.max(x, piece.x)];
+      for (let i = start + 1; i < end; i++) {
+        if (chessBoard[x === piece.x ? piece.x : i][x === piece.x ? i : piece.y] !== null) {
+          return false;
+        }
+      }
+      if (chessBoard[x][y] === null || chessBoard[x][y].type[0] !== piece.type[0]) {
         return true;
-     }
-    
-     if(piece.type === 'Wpawn' && x === piece.x -2 && y ===piece.y && chessBoard[x][y]==null && piece.x===6)
-     {
-        return true;
-     }
-    
-    if (piece.type === 'Bpawn' && x === piece.x + 1 && y === piece.y && chessBoard[x][y]==null )  {
-     
-      return true;
+      }
     }
-    if (piece.type === 'Wpawn' && x === piece.x - 1 && y === piece.y && chessBoard[x][y]==null ) {
-      return true;
-    }
-
-    if(piece.type==='Wpawn' && ((x === piece.x - 1 && y === piece.y+1)||(x === piece.x - 1 && y === piece.y-1)) && chessBoard[x][y]!=null && chessBoard[x][y].type[0]==='B')
-    {
-      return true;
-    }
-    if(piece.type==='Bpawn' && ((x === piece.x + 1 && y === piece.y+1)||(x === piece.x + 1 && y === piece.y-1)) && chessBoard[x][y]!=null && chessBoard[x][y].type[0]==='W')
-    {
-      return true;
-    }
-    
   
-    
+    if ((piece.type === 'Bbishop' || piece.type === 'Wbishop') && Math.abs(x - piece.x) === Math.abs(y - piece.y)) {
+      const deltaX = x > piece.x ? 1 : -1;
+      const deltaY = y > piece.y ? 1 : -1;
+      let currentX = piece.x + deltaX;
+      let currentY = piece.y + deltaY;
+      while (currentX !== x && currentY !== y) {
+        if (chessBoard[currentX][currentY] !== null) {
+          return false;
+        }
+        currentX += deltaX;
+        currentY += deltaY;
+      }
+      // Ensure target square is either empty or occupied by an opponent's piece
+      if (chessBoard[x][y] === null || chessBoard[x][y].type[0] !== piece.type[0]) {
+        return true;
+      }
+    }
+  
+    // King movement
+    if ((piece.type === 'Bking' || piece.type === 'Wking') && Math.abs(x - piece.x) <= 1 && Math.abs(y - piece.y) <= 1) {
+      // Ensure target square is either empty or occupied by an opponent's piece
+      if (chessBoard[x][y] === null || chessBoard[x][y].type[0] !== piece.type[0]) {
+        return true;
+      }
+    }
+  
+    // Queen movement
+    if ((piece.type === 'Bqueen' || piece.type === 'Wqueen') && ((x === piece.x || y === piece.y) || (Math.abs(x - piece.x) === Math.abs(y - piece.y)))) {
+      const [startX, endX, startY, endY] = x === piece.x ? [piece.x, piece.x, Math.min(y, piece.y), Math.max(y, piece.y)] : [Math.min(x, piece.x), Math.max(x, piece.x), piece.y, piece.y];
+      for (let i = startX + 1; i < endX; i++) {
+        if (chessBoard[i][piece.y] !== null) {
+          return false;
+        }
+      }
+      for (let j = startY + 1; j < endY; j++) {
+        if (chessBoard[piece.x][j] !== null) {
+          return false;
+        }
+      }
+      // Check diagonal movement for queen
+      if (Math.abs(x - piece.x) === Math.abs(y - piece.y)) {
+        const deltaX = x > piece.x ? 1 : -1;
+        const deltaY = y > piece.y ? 1 : -1;
+        let currentX = piece.x + deltaX;
+        let currentY = piece.y + deltaY;
+        while (currentX !== x && currentY !== y) {
+          if (chessBoard[currentX][currentY] !== null) {
+            return false;
+          }
+          currentX += deltaX;
+          currentY += deltaY;
+        }
+      }
+      // Ensure target square is either empty or occupied by an opponent's piece
+      if (chessBoard[x][y] === null || chessBoard[x][y].type[0] !== piece.type[0]) {
+        return true;
+      }
+    }
+  
     return false;
   };
+  
+  
 
   const renderPiece = (piece, x, y) => {
     if (!piece) return null;
     const PieceComponent = {
       Bpawn, Wpawn, Brook, Wrook, Bbishop, Wbishop, Bknight, Wknight, Wqueen, Bqueen, Wking, Bking
     }[piece.type];
-    return <PieceComponent x={x} y={y}  onClick={handlePieceClick} />;
+    return <PieceComponent x={x} y={y} onClick={() => handlePieceClick(x, y)} />;
   };
 
   return (
@@ -132,8 +203,7 @@ export default function Board() {
                     }}
                     onClick={() => handlePieceClick(rIndex, cIndex)}
                   >
-                    
-                    {renderPiece(piece, rIndex, cIndex,)}
+                    {renderPiece(piece, rIndex, cIndex)}
                   </div>
                 );
               })}
