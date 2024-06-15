@@ -20,22 +20,32 @@ Day - 3
 Queen is working and knight are working facing little glitch regarding knight.
 en-passant still missing 
 knight causing few problem.
+
 ![Screenshot (226)](https://github.com/Ayush1234567434324/chess/assets/104828221/685cfeec-de8b-42a4-bbd6-96b57271139a) 
+
 ![Screenshot (227)](https://github.com/Ayush1234567434324/chess/assets/104828221/8c8a5ea3-d550-4b04-8cf5-aeb198c02ef8)
+
 ![Screenshot (228)](https://github.com/Ayush1234567434324/chess/assets/104828221/bc8825ef-1580-4b0e-83dc-f6e9a5768e91)
+
 
 Day - 4
 Gave my chess Board look like chess.com
+
 ![Screenshot (231)](https://github.com/Ayush1234567434324/chess/assets/104828221/4aa3353e-e73c-4ef9-a8e9-c5616f75107f)
+
 
 Day - 5
 Now every piece is hovering its next attack and taking piece showing different view
+
 ![Screenshot (232)](https://github.com/Ayush1234567434324/chess/assets/104828221/3558a9dd-95bb-4541-98e9-a8f560dbcfdd)
+
 ![Screenshot (233)](https://github.com/Ayush1234567434324/chess/assets/104828221/15c52070-121a-400c-af7d-85c8635cdca4)
 
-Day  6 
+Day  -  6 
 Players now make moves according to there chance.
+
 Along with some sound effects
+
 ![ScreenRecording-MadewithFlexClip-ezgif com-video-to-gif-converter](https://github.com/Ayush1234567434324/chess/assets/104828221/8f6c06e4-5a14-419f-8f54-8deb90dbdc62)
 
 
