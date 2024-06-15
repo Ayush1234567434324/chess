@@ -18,6 +18,7 @@ export default function Board() {
   
   const [chessBoard, setChessBoard] = useState([]);
   const [selectedPiece, setSelectedPiece] = useState(null);
+  const [validMoves, setValidMoves] = useState([]);
 
   useEffect(() => {
     const result = [];
@@ -57,8 +58,11 @@ export default function Board() {
   const handlePieceClick = (x, y) => {
     if (selectedPiece) {
       movePiece(x, y);
+      setValidMoves([]);
     } else if (chessBoard[x][y]) {
-      setSelectedPiece({ x, y, ...chessBoard[x][y] });
+      const piece = chessBoard[x][y];
+      setSelectedPiece({ x, y, ...piece });
+      setValidMoves(calculateValidMoves(piece));
     }
   };
 
@@ -74,6 +78,9 @@ export default function Board() {
   };
 
   const isMoveValid = (piece, x, y) => {
+    if (x < 0 || x >= n || y < 0 || y >= m) {
+      return false;
+    }
     // Pawn movement
     if (piece.type === 'Bpawn' && x === piece.x + 2 && y === piece.y && chessBoard[x][y] === null && piece.x === 1) {
       return true;
@@ -114,6 +121,9 @@ export default function Board() {
       let currentX = piece.x + deltaX;
       let currentY = piece.y + deltaY;
       while (currentX !== x && currentY !== y) {
+        if (currentX < 0 || currentX >= n || currentY < 0 || currentY >= m) {
+          return false;
+        }
         if (chessBoard[currentX][currentY] !== null) {
           return false;
         }
@@ -149,6 +159,17 @@ export default function Board() {
     return false;
   };
   
+  const calculateValidMoves = (piece) => {
+    const moves = [];
+    for (let x = 0; x < n; x++) {
+      for (let y = 0; y < m; y++) {
+        if (isMoveValid(piece, x, y)) {
+          moves.push({ x, y });
+        }
+      }
+    }
+    return moves;
+  };
   
   
 
@@ -160,6 +181,7 @@ export default function Board() {
     return <PieceComponent  x={x} y={y} onClick={() => handlePieceClick(x, y)} />;
   };
 
+  const isHighlight = (x, y) => validMoves.some(move => move.x === x && move.y === y);
   return (
     <>
       {chessBoard.length > 0 &&
@@ -173,7 +195,7 @@ export default function Board() {
                       (rIndex + cIndex) % 2 === 0
                         ? `black ${rIndex}${cIndex}`
                         : `white ${rIndex}${cIndex}`
-                    } `}
+                    } ${isHighlight(rIndex,cIndex)?chessBoard[rIndex][cIndex]!=null?"highlighted-takes":"highlighted":""}`}
                     key={cIndex}
                     style={{
                       display: 'flex',
@@ -182,7 +204,8 @@ export default function Board() {
                       height: 'calc(100vw / 8)', // Set height based on viewport width
                       width: 'calc(100vw / 8)',  // Set width based on viewport width
                       maxWidth: '80px',          // Limit maximum width to 80px
-                      maxHeight: '80px',         // Limit maximum height to 80px
+                      maxHeight: '80px',   
+                        // Limit maximum height to 80px
                     }}
                     onClick={() => handlePieceClick(rIndex, cIndex)}
                   >

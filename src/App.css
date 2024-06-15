@@ -16,7 +16,36 @@
 .white {
   background-color: #EBECD0;
 }
-.highlighted
+.highlighted {
+  position: relative;
+  
+}
+
+.highlighted::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 35%;
+  height: 35%;
+  background-color: rgba(0, 0, 0, 0.22);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.highlighted-takes
 {
-  background-color: aqua;
+  position: relative;
+}
+.highlighted-takes::before {
+  content: '';
+  position: absolute;
+
+  width: 95%;
+  height: 95%;
+  border: 8px solid rgba(0, 0, 0, 0.15); /* Set the border color and width */
+  border-radius: 50%; /* Make the border a circle */
+  pointer-events: none; /* Ensure the ring doesn't interfere with clicks */
+  box-sizing: border-box; /* Include border in element's dimensions */
 }
