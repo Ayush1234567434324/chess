@@ -19,7 +19,7 @@ export default function Board() {
   const [chessBoard, setChessBoard] = useState([]);
   const [selectedPiece, setSelectedPiece] = useState(null);
   const [validMoves, setValidMoves] = useState([]);
-
+  const [player , setplayer] = useState("W");
   useEffect(() => {
     const result = [];
     for (let i = 0; i < n; i++) {
@@ -58,7 +58,8 @@ export default function Board() {
   const handlePieceClick = (x, y) => {
     if (selectedPiece) {
       movePiece(x, y);
-      setValidMoves([]);
+      
+     
     } else if (chessBoard[x][y]) {
       const piece = chessBoard[x][y];
       setSelectedPiece({ x, y, ...piece });
@@ -67,12 +68,17 @@ export default function Board() {
   };
 
   const movePiece = (x, y) => {
+   
+    if(player==selectedPiece.type[0])
     if (isMoveValid(selectedPiece, x, y)) {
       const newBoard = chessBoard.map(row => row.slice());
       const { x: oldX, y: oldY } = selectedPiece;
       newBoard[x][y] = { ...selectedPiece, x, y };
       newBoard[oldX][oldY] = null;
       setChessBoard(newBoard);
+      setValidMoves([]);
+      setplayer(player==="W"?"B":"W");
+      
     }
     setSelectedPiece(null);
   };
@@ -183,7 +189,8 @@ export default function Board() {
 
   const isHighlight = (x, y) => validMoves.some(move => move.x === x && move.y === y);
   return (
-    <>
+    <div style={{display:'flex',width:'70%'}}>
+      <div>
       {chessBoard.length > 0 &&
         chessBoard.map((row, rIndex) => {
           return (
@@ -216,6 +223,12 @@ export default function Board() {
             </div>
           );
         })}
-    </>
+        </div>
+        <div style={{alignContent:"center",paddingLeft:"2%",width:"100%"}}>
+        <h1>Player-{player}</h1>
+        </div>
+        
+        
+    </div>
   );
 }
