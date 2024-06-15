@@ -199,7 +199,7 @@ export default function Board() {
 
   const isHighlight = (x, y) => validMoves.some(move => move.x === x && move.y === y);
   return (
-    <div style={{display:'flex',width:'70%'}}>
+    <div className='responsive' style={{display:'flex',width:'100%',alignItems:'center'}}>
       <div>
       {chessBoard.length > 0 &&
         chessBoard.map((row, rIndex) => {
@@ -220,8 +220,8 @@ export default function Board() {
                       alignItems: 'center',
                       height: 'calc(100vw / 8)', // Set height based on viewport width
                       width: 'calc(100vw / 8)',  // Set width based on viewport width
-                      maxWidth: '80px',          // Limit maximum width to 80px
-                      maxHeight: '80px',   
+                      maxWidth: '60px',          // Limit maximum width to 80px
+                      maxHeight: '60px',   
                         // Limit maximum height to 80px
                     }}
                     onClick={() => handlePieceClick(rIndex, cIndex)}
@@ -234,7 +234,7 @@ export default function Board() {
           );
         })}
         </div>
-        <div style={{alignContent:"center",paddingLeft:"2%",width:"100%"}}>
+        <div style={{alignContent:"center",paddingLeft:"2%"}}>
         <h1>Player-{player}</h1>
         </div>
         

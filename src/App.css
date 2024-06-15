@@ -55,3 +55,12 @@
       flex-direction: column !important;
   }
 
+  @media (max-width: 630px) {
+.box
+{
+  width: 50px !important;
+  height: 50px !important;
+  
+}
+
+  }
