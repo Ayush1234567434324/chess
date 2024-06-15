@@ -28,3 +28,9 @@ Day - 4
 Gave my chess Board look like chess.com
 ![Screenshot (231)](https://github.com/Ayush1234567434324/chess/assets/104828221/4aa3353e-e73c-4ef9-a8e9-c5616f75107f)
 
+Day - 5
+Now every piece is hovering its next attack and taking piece showing different view
+![Screenshot (232)](https://github.com/Ayush1234567434324/chess/assets/104828221/3558a9dd-95bb-4541-98e9-a8f560dbcfdd)
+![Screenshot (233)](https://github.com/Ayush1234567434324/chess/assets/104828221/15c52070-121a-400c-af7d-85c8635cdca4)
+
+
