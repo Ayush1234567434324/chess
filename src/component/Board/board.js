@@ -68,20 +68,30 @@ export default function Board() {
   };
 
   const movePiece = (x, y) => {
-   
-    if(player==selectedPiece.type[0])
-    if (isMoveValid(selectedPiece, x, y)) {
-      const newBoard = chessBoard.map(row => row.slice());
-      const { x: oldX, y: oldY } = selectedPiece;
-      newBoard[x][y] = { ...selectedPiece, x, y };
-      newBoard[oldX][oldY] = null;
-      setChessBoard(newBoard);
-      setValidMoves([]);
-      setplayer(player==="W"?"B":"W");
-      
+    if (player == selectedPiece.type[0]) {
+        if (isMoveValid(selectedPiece, x, y)) {
+            // Create a new Audio object
+            var audio = new Audio(`https://images.chesscomfiles.com/chess-themes/sounds/_WEBM_/default/${chessBoard[x][y]===null?"move-self":"capture"}.webm`);
+            // Play the audio
+            audio.play();
+            
+            const newBoard = chessBoard.map(row => row.slice());
+            const { x: oldX, y: oldY } = selectedPiece;
+            newBoard[x][y] = { ...selectedPiece, x, y };
+            newBoard[oldX][oldY] = null;
+            setChessBoard(newBoard);
+            setValidMoves([]);
+            setplayer(player === "W" ? "B" : "W");
+        }
+        setSelectedPiece(null);
     }
-    setSelectedPiece(null);
-  };
+    else
+    {
+      console.log(selectedPiece)
+      setSelectedPiece(null);
+    }
+};
+
 
   const isMoveValid = (piece, x, y) => {
     if (x < 0 || x >= n || y < 0 || y >= m) {

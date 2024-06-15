@@ -49,3 +49,9 @@
   pointer-events: none; /* Ensure the ring doesn't interfere with clicks */
   box-sizing: border-box; /* Include border in element's dimensions */
 }
+
+  .responsive {
+      display: flex;
+      flex-direction: column !important;
+  }
+
