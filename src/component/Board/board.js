@@ -95,7 +95,7 @@ export default function Board() {
     }
   
     // Rook movement
-    if ((piece.type === 'Brook' || piece.type === 'Wrook') && (x === piece.x || y === piece.y)) {
+    if ((piece.type === 'Brook' || piece.type === 'Wrook' || piece.type === 'Bqueen' || piece.type === 'Wqueen') && (x === piece.x || y === piece.y)) {
       const [start, end] = x === piece.x ? [Math.min(y, piece.y), Math.max(y, piece.y)] : [Math.min(x, piece.x), Math.max(x, piece.x)];
       for (let i = start + 1; i < end; i++) {
         if (chessBoard[x === piece.x ? piece.x : i][x === piece.x ? i : piece.y] !== null) {
@@ -107,8 +107,8 @@ export default function Board() {
       }
     }
   
-    //Bishop movement
-    if ((piece.type === 'Bbishop' || piece.type === 'Wbishop') && Math.abs(x - piece.x) === Math.abs(y - piece.y)) {
+    // Bishop movement
+    if ((piece.type === 'Bbishop' || piece.type === 'Wbishop' || piece.type === 'Bqueen' || piece.type === 'Wqueen') && Math.abs(x - piece.x) === Math.abs(y - piece.y)) {
       const deltaX = x > piece.x ? 1 : -1;
       const deltaY = y > piece.y ? 1 : -1;
       let currentX = piece.x + deltaX;
@@ -134,10 +134,21 @@ export default function Board() {
       }
     }
   
-    
+    // Knight movement
+    if (piece.type === 'Bknight' || piece.type === 'Wknight') {
+      const dx = Math.abs(x - piece.x);
+      const dy = Math.abs(y - piece.y);
+      if ((dx === 2 && dy === 1) || (dx === 1 && dy === 2)) {
+        // Ensure target square is either empty or occupied by an opponent's piece
+        if (chessBoard[x][y] === null || chessBoard[x][y].type[0] !== piece.type[0]) {
+          return true;
+        }
+      }
+    }
   
     return false;
   };
+  
   
   
 
