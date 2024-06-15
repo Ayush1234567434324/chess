@@ -24,4 +24,7 @@ knight causing few problem.
 ![Screenshot (227)](https://github.com/Ayush1234567434324/chess/assets/104828221/8c8a5ea3-d550-4b04-8cf5-aeb198c02ef8)
 ![Screenshot (228)](https://github.com/Ayush1234567434324/chess/assets/104828221/bc8825ef-1580-4b0e-83dc-f6e9a5768e91)
 
+Day - 4
+Gave my chess Board look like chess.com
+![Screenshot (231)](https://github.com/Ayush1234567434324/chess/assets/104828221/4aa3353e-e73c-4ef9-a8e9-c5616f75107f)
 
