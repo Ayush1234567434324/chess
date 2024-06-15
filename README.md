@@ -33,4 +33,9 @@ Now every piece is hovering its next attack and taking piece showing different v
 ![Screenshot (232)](https://github.com/Ayush1234567434324/chess/assets/104828221/3558a9dd-95bb-4541-98e9-a8f560dbcfdd)
 ![Screenshot (233)](https://github.com/Ayush1234567434324/chess/assets/104828221/15c52070-121a-400c-af7d-85c8635cdca4)
 
+Day  6 
+Players now make moves according to there chance.
+Along with some sound effects
+![ScreenRecording-MadewithFlexClip-ezgif com-video-to-gif-converter](https://github.com/Ayush1234567434324/chess/assets/104828221/8f6c06e4-5a14-419f-8f54-8deb90dbdc62)
+
 
