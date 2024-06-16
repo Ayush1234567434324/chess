@@ -48,9 +48,13 @@ Along with some sound effects
 
 ![ScreenRecording-MadewithFlexClip-ezgif com-video-to-gif-converter](https://github.com/Ayush1234567434324/chess/assets/104828221/8f6c06e4-5a14-419f-8f54-8deb90dbdc62)
 
+
 Day - 7 
 Castling is working and even checking that wether king is not under attack drag and push the pawn is also available but only for pc
+
 ![Screenshot (234)](https://github.com/Ayush1234567434324/chess/assets/104828221/dd1e46b3-7f64-4fd2-9b01-a9a6d9fdd58b)
+
 ![Screenshot (235)](https://github.com/Ayush1234567434324/chess/assets/104828221/3bc7d773-56ba-450e-9654-f55a2b838e22)
+
 
 
