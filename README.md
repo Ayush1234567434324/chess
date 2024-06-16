@@ -56,5 +56,22 @@ Castling is working and even checking that wether king is not under attack drag 
 
 ![Screenshot (235)](https://github.com/Ayush1234567434324/chess/assets/104828221/3bc7d773-56ba-450e-9654-f55a2b838e22)
 
+Day - 8 
+Now I have even included the pawn promotion 
+
+![Screenshot (236)](https://github.com/Ayush1234567434324/chess/assets/104828221/88652887-6826-4da4-aa08-527678755b7c)
+
+![Screenshot (237)](https://github.com/Ayush1234567434324/chess/assets/104828221/f20962ee-e7bb-4abd-ba16-36b568d899bf)
+
+![Screenshot (238)](https://github.com/Ayush1234567434324/chess/assets/104828221/881eb457-e349-42bc-990a-fe3b942e6d8d)
+
+Day - 9 
+
+Now all checks are even included along with check mates 
+
+![Screenshot (239)](https://github.com/Ayush1234567434324/chess/assets/104828221/06817deb-6749-4f00-9dbf-cd4cf81e2a9d)
+
+
+
 
 
