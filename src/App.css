@@ -33,7 +33,11 @@
   border-radius: 50%;
   pointer-events: none;
 }
-
+button
+{
+  width: 100px;
+  height:100px;
+}
 .highlighted-takes
 {
   position: relative;
@@ -55,6 +59,15 @@
       flex-direction: column !important;
   }
 
+
+  @media (max-width: 830px) {
+    
+      button
+      {
+        width: 60px;
+        height:60px;
+      }
+    }
   @media (max-width: 630px) {
 .box
 {
@@ -62,5 +75,6 @@
   height: 50px !important;
   
 }
+
 
   }

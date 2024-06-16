@@ -20,7 +20,8 @@ export default function Board() {
   const [selectedPiece, setSelectedPiece] = useState(null);
   const [validMoves, setValidMoves] = useState([]);
   const [player, setplayer] = useState("W");
-
+  const [show,setshow] = useState(null);
+  const [final,setfinal]=useState(0);
   useEffect(() => {
     const result = [];
     for (let i = 0; i < n; i++) {
@@ -54,6 +55,8 @@ export default function Board() {
     result[7][4] = { type: "Wking", x: 7, y: 4 };
 
     setChessBoard(result);
+    
+   
   }, []);
 
   const handlePieceClick = (x, y) => {
@@ -71,7 +74,7 @@ export default function Board() {
 
   const movePiece = (x, y) => {
     if (player === selectedPiece.type[0]) {
-      if (isMoveValid(selectedPiece, x, y)) {
+      if (isMoveValid(selectedPiece, x, y,chessBoard)) {
         // Create a new Audio object
         var audio = new Audio(
           `https://images.chesscomfiles.com/chess-themes/sounds/_WEBM_/default/${
@@ -189,6 +192,7 @@ export default function Board() {
           setChessBoard(newBoard);
           setValidMoves([]);
           setplayer(player === "W" ? "B" : "W");
+          
           setSelectedPiece(null);
           return;
         }
@@ -219,9 +223,21 @@ export default function Board() {
         );
 
         if (!isUnderAttack) {
+              
+          if(selectedPiece.type==='Bpawn' && x===7)
+          {
+               setshow({x,y});
+          }
+          if(selectedPiece.type==='Wpawn' && x===0)
+          {
+               setshow({x,y});
+          }
+
           setChessBoard(newBoard);
           setValidMoves([]);
           setplayer(player === "W" ? "B" : "W");
+        
+
         } else {
           var audioillegal = new Audio(
             `https://images.chesscomfiles.com/chess-themes/sounds/_WEBM_/default/illegal.webm`
@@ -244,7 +260,7 @@ export default function Board() {
         if (
           piece &&
           piece.type[0] !== kingType[0] &&
-          isMoveValid(piece, kingX, kingY)
+          isMoveValid(piece, kingX, kingY,chessBoard)
         ) {
           console.log(piece);
           return true;
@@ -286,12 +302,12 @@ export default function Board() {
 
   // Usage example
 
-  const isMoveValid = (piece, x, y) => {
+  const isMoveValid = (piece, x, y,chessBoard) => {
     if (x < 0 || x >= n || y < 0 || y >= m) {
       return false;
     }
     // Pawn movement
-
+    
     if (
       piece.type === "Bpawn" &&
       x === piece.x + 2 &&
@@ -316,6 +332,7 @@ export default function Board() {
       y === piece.y &&
       chessBoard[x][y] === null
     ) {
+    
       return true;
     }
     if (
@@ -527,7 +544,7 @@ export default function Board() {
     const moves = [];
     for (let x = 0; x < n; x++) {
       for (let y = 0; y < m; y++) {
-        if (isMoveValid(piece, x, y)) {
+        if (isMoveValid(piece, x, y,chessBoard)) {
           moves.push({ x, y });
         }
       }
@@ -562,6 +579,70 @@ export default function Board() {
 
   const isHighlight = (x, y) =>
     validMoves.some((move) => move.x === x && move.y === y);
+
+    const isCheckmateCondition = (Player) => {
+      let kingType = Player === "W" ? "Wking" : "Bking";
+      let kingPosition = findKingPosition(kingType, chessBoard);
+      console.log(kingPosition)
+      if (kingPosition === null) {
+        kingType = player === "W" ? "Wkingmoved" : "Bkingmoved";
+
+        kingPosition = findKingPosition(kingType, chessBoard);
+      }
+      let x =  isselfKingInCheck(kingType, kingPosition.x, kingPosition.y, chessBoard);
+      if(x)return 1;
+
+      for (let i = 0; i < n; i++) {
+        for (let j = 0; j < m; j++) {
+          const piece = chessBoard[i][j];
+          
+
+
+
+
+          if (piece && piece.type[0] === Player) {
+            console.log(Player)
+            const moves = calculateValidMoves(piece);
+            for (let k = 0; k < moves.length; k++) {
+              const { x, y } = moves[k];
+              
+              if (!isCheckAfterMove(piece, x, y)) {
+                
+                  return false;
+                
+                
+              }
+            }
+          }
+        }
+      }
+      return true;
+    };
+
+    const isCheckAfterMove = (piece, x, y) => {
+      const newBoard = chessBoard.map((row) => row.slice());
+      newBoard[x][y] = { ...piece, x, y };
+      newBoard[piece.x][piece.y] = null;
+      let kingType = piece.type[0] === "W" ? "Wking" : "Bking";
+      let kingPosition = findKingPosition(kingType, newBoard);
+      console.log(kingPosition)
+      if (kingPosition === null) {
+        kingType = player === "W" ? "Wkingmoved" : "Bkingmoved";
+
+        kingPosition = findKingPosition(kingType, newBoard);
+      }
+      return isselfKingInCheck(kingType, kingPosition.x, kingPosition.y, newBoard);
+    };
+    useEffect(() => {
+      if(chessBoard.length > 0 ) {
+        let ans = isCheckmateCondition(player);
+        if (ans) setfinal(1);
+      }
+    }, [chessBoard, player]);
+    
+
+    
+
   return (
     <div
       className="responsive"
@@ -604,7 +685,15 @@ export default function Board() {
                       onDragOver={handlePieceDragOver}
                       onDrop={() => handlePieceClick(rIndex, cIndex)}
                     >
-                      {renderPiece(piece, rIndex, cIndex)}
+                      
+                      {show!=null &&show.x===rIndex && show.y===cIndex &&  <div className="promotion-dropdown" style={{zIndex:2,display:'flex',flexDirection:'column',gap:'5px',position:'absolute',right:'2%',top:'20%'}}>
+                      <button onClick={() =>{chessBoard[rIndex][cIndex].type=chessBoard[rIndex][cIndex].type[0]+"queen";setshow(null);}}>{chessBoard[rIndex][cIndex].type[0] === 'B' ? <Bqueen/> : <Wqueen/>}</button>
+        <button onClick={() =>{chessBoard[rIndex][cIndex].type=chessBoard[rIndex][cIndex].type[0]+"rook";setshow(null);}}>{chessBoard[rIndex][cIndex].type[0] === 'B' ? <Brook/> : <Wrook/>}</button>
+        <button onClick={() =>{chessBoard[rIndex][cIndex].type=chessBoard[rIndex][cIndex].type[0]+"bishop";setshow(null);}}>{chessBoard[rIndex][cIndex].type[0] === 'B' ? <Bbishop/> : <Wbishop/>}</button>
+        <button onClick={() =>{chessBoard[rIndex][cIndex].type=chessBoard[rIndex][cIndex].type[0]+"knight";setshow(null);}}>{chessBoard[rIndex][cIndex].type[0] === 'B' ? <Bknight/> : <Wknight/>}</button>
+      
+    </div>}
+    {renderPiece(piece, rIndex, cIndex)}
                     </div>
                   );
                 })}
@@ -614,6 +703,7 @@ export default function Board() {
       </div>
       <div style={{ alignContent: "center", paddingLeft: "2%" }}>
         <h1>Player-{player}</h1>
+        {final?`player - ${player} lost`:null}
       </div>
     </div>
   );
