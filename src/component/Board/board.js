@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import Bpawn from './Chess-pieces/black/Bpawn';
-import Wpawn from './Chess-pieces/white/Wpawn';
-import Brook from './Chess-pieces/black/Brook';
-import Wrook from './Chess-pieces/white/Wrook';
+import {Bpawn,Bpawnmoved} from './Chess-pieces/black/Bpawn';
+import {Wpawn,Wpawnmoved} from './Chess-pieces/white/Wpawn';
+import {Brook,Brookmoved} from './Chess-pieces/black/Brook';
+import {Wrook,Wrookmoved} from './Chess-pieces/white/Wrook';
 import Bbishop from './Chess-pieces/black/Bbishop';
 import Wbishop from './Chess-pieces/white/Wbishop';
 import Bknight from './Chess-pieces/black/Bknight';
 import Wknight from './Chess-pieces/white/Wknight';
 import Wqueen from './Chess-pieces/white/Wqueen';
 import Bqueen from './Chess-pieces/black/Bqueen';
-import Wking from './Chess-pieces/white/Wking';
-import Bking from './Chess-pieces/black/Bking';
+import {Wking,Wkingmoved} from './Chess-pieces/white/Wking';
+import {Bking,Bkingmoved} from './Chess-pieces/black/Bking';
 
 export default function Board() {
   const n = 8;
@@ -20,6 +20,7 @@ export default function Board() {
   const [selectedPiece, setSelectedPiece] = useState(null);
   const [validMoves, setValidMoves] = useState([]);
   const [player , setplayer] = useState("W");
+ 
   useEffect(() => {
     const result = [];
     for (let i = 0; i < n; i++) {
@@ -66,9 +67,12 @@ export default function Board() {
       setValidMoves(calculateValidMoves(piece));
     }
   };
+  const handlePieceDragOver = (event) => {
+  event.preventDefault(); // Prevent the default behavior (preventing the drop)
+};
 
   const movePiece = (x, y) => {
-    if (player == selectedPiece.type[0]) {
+    if (player === selectedPiece.type[0]) {
         if (isMoveValid(selectedPiece, x, y)) {
             // Create a new Audio object
             var audio = new Audio(`https://images.chesscomfiles.com/chess-themes/sounds/_WEBM_/default/${chessBoard[x][y]===null?"move-self":"capture"}.webm`);
@@ -77,6 +81,69 @@ export default function Board() {
             
             const newBoard = chessBoard.map(row => row.slice());
             const { x: oldX, y: oldY } = selectedPiece;
+            console.log(selectedPiece)
+            if (selectedPiece.type === 'Wking' && x === 7 && y === 6 && selectedPiece.x === 7 && selectedPiece.y === 4 && chessBoard[7][7] && chessBoard[7][7].type === 'Wrook' ) {
+              const newBoard = chessBoard.map(row => row.slice());
+              newBoard[7][6] = { ...selectedPiece, x: 7, y: 6 };
+              newBoard[7][5] = { ...chessBoard[7][7], x: 7, y: 5 };
+              newBoard[7][7] = null;
+              newBoard[selectedPiece.x][selectedPiece.y] = null;
+              setChessBoard(newBoard);
+              setValidMoves([]);
+              setplayer(player === "W" ? "B" : "W");
+              setSelectedPiece(null);
+              return;
+          }
+          if (selectedPiece.type === 'Wking' && x === 7 && y === 2 && selectedPiece.x === 7 && selectedPiece.y === 4 && chessBoard[7][0] && chessBoard[7][0].type === 'Wrook') {
+              const newBoard = chessBoard.map(row => row.slice());
+              newBoard[7][2] = { ...selectedPiece, x: 7, y: 2 };
+              newBoard[7][3] = { ...chessBoard[7][0], x: 7, y: 3 };
+              newBoard[7][0] = null;
+              newBoard[selectedPiece.x][selectedPiece.y] = null;
+              setChessBoard(newBoard);
+              setValidMoves([]);
+              setplayer(player === "W" ? "B" : "W");
+              setSelectedPiece(null);
+              return;
+          }
+          if (selectedPiece.type === 'Bking' && x === 0 && y === 6 && selectedPiece.x === 0 && selectedPiece.y === 4 && chessBoard[0][7] && chessBoard[0][7].type === 'Brook' ) {
+            const newBoard = chessBoard.map(row => row.slice());
+            newBoard[0][6] = { ...selectedPiece, x: 0, y: 6 };
+            newBoard[0][5] = { ...chessBoard[0][7], x: 0, y: 5 };
+            newBoard[0][7] = null;
+            newBoard[selectedPiece.x][selectedPiece.y] = null;
+            setChessBoard(newBoard);
+            setValidMoves([]);
+            setplayer(player === "W" ? "B" : "W");
+            setSelectedPiece(null);
+            return;
+        }
+        if (selectedPiece.type === 'Bking' && x === 0 && y === 2 && selectedPiece.x === 0 && selectedPiece.y === 4 && chessBoard[0][0] && chessBoard[0][0].type === 'Brook' ) {
+            const newBoard = chessBoard.map(row => row.slice());
+            newBoard[0][2] = { ...selectedPiece, x: 0, y: 2 };
+            newBoard[0][3] = { ...chessBoard[0][0], x: 0, y: 3 };
+            newBoard[0][0] = null;
+            newBoard[selectedPiece.x][selectedPiece.y] = null;
+            setChessBoard(newBoard);
+            setValidMoves([]);
+            setplayer(player === "W" ? "B" : "W");
+            setSelectedPiece(null);
+            return;
+        }
+
+
+            if(selectedPiece.type==="Bking")
+            selectedPiece.type = "Bkingmoved"
+             
+            if(selectedPiece.type==="Wking")
+            selectedPiece.type = "Wkingmoved"
+
+            if(selectedPiece.type==="Brook")
+            selectedPiece.type = "Brookmoved"
+             
+            if(selectedPiece.type==="Wrook")
+            selectedPiece.type = "Wrookmoved"
+
             newBoard[x][y] = { ...selectedPiece, x, y };
             newBoard[oldX][oldY] = null;
             setChessBoard(newBoard);
@@ -92,6 +159,19 @@ export default function Board() {
     }
 };
 
+const isKingInCheck = (kingType, kingX, kingY) => {
+  for (let i = 0; i < n; i++) {
+      for (let j = 0; j < m; j++) {
+          const piece = chessBoard[i][j];
+          if (piece && piece.type[0] !== kingType[0] && isMoveValid(piece, kingX, kingY)) {
+             console.log(piece)
+              return true;
+          }
+      }
+  }
+  return false;
+};
+
 
   const isMoveValid = (piece, x, y) => {
     if (x < 0 || x >= n || y < 0 || y >= m) {
@@ -99,9 +179,11 @@ export default function Board() {
     }
     // Pawn movement
     if (piece.type === 'Bpawn' && x === piece.x + 2 && y === piece.y && chessBoard[x][y] === null && piece.x === 1) {
+     
       return true;
     }
     if (piece.type === 'Wpawn' && x === piece.x - 2 && y === piece.y && chessBoard[x][y] === null && piece.x === 6) {
+   
       return true;
     }
     if (piece.type === 'Bpawn' && x === piece.x + 1 && y === piece.y && chessBoard[x][y] === null) {
@@ -118,7 +200,7 @@ export default function Board() {
     }
   
     // Rook movement
-    if ((piece.type === 'Brook' || piece.type === 'Wrook' || piece.type === 'Bqueen' || piece.type === 'Wqueen') && (x === piece.x || y === piece.y)) {
+    if ((piece.type === 'Brook' || piece.type === 'Wrook' || piece.type === 'Bqueen' || piece.type === 'Wqueen'||piece.type==='Brookmoved'||piece.type==='Wrookmoved') && (x === piece.x || y === piece.y)) {
       const [start, end] = x === piece.x ? [Math.min(y, piece.y), Math.max(y, piece.y)] : [Math.min(x, piece.x), Math.max(x, piece.x)];
       for (let i = start + 1; i < end; i++) {
         if (chessBoard[x === piece.x ? piece.x : i][x === piece.x ? i : piece.y] !== null) {
@@ -153,12 +235,38 @@ export default function Board() {
     }
   
     // King movement
-    if ((piece.type === 'Bking' || piece.type === 'Wking') && Math.abs(x - piece.x) <= 1 && Math.abs(y - piece.y) <= 1) {
+    if ((piece.type === 'Bking' || piece.type === 'Wking'||piece.type==='Wkingmoved'||piece.type==='Bkingmoved') && Math.abs(x - piece.x) <= 1 && Math.abs(y - piece.y) <= 1) {
       // Ensure target square is either empty or occupied by an opponent's piece
       if (chessBoard[x][y] === null || chessBoard[x][y].type[0] !== piece.type[0]) {
+
         return true;
       }
     }
+
+  // Castling logic for White king
+    if (piece.type === 'Wking' && x === 7 && y === 6 && piece.x === 7 && piece.y === 4 && chessBoard[7][7] && chessBoard[7][7].type === 'Wrook' ) {
+      if (!chessBoard[7][5] && !chessBoard[7][6] && !isKingInCheck(piece.type,7,5) && !isKingInCheck(piece.type,7,6) ) {
+           
+          return true;
+      }
+  }
+  if (piece.type === 'Wking' && x === 7 && y === 2 && piece.x === 7 && piece.y === 4 && chessBoard[7][0] && chessBoard[7][0].type === 'Wrook' ) {
+      if (!chessBoard[7][1] && !chessBoard[7][2] && !chessBoard[7][3] && !isKingInCheck(piece.type,7,1) && !isKingInCheck(piece.type,7,2)&& !isKingInCheck(piece.type,7,3) ) {
+          return true;
+      }
+  }
+
+  // Castling logic for black king
+  if (piece.type === 'Bking' && x === 0 && y === 6 && piece.x === 0 && piece.y === 4 && chessBoard[0][7] && chessBoard[0][7].type === 'Brook') {
+      if (!chessBoard[0][5] && !chessBoard[0][6] && !isKingInCheck(piece.type,0,5) && !isKingInCheck(piece.type,0,6)) {
+          return true;
+      }
+  }
+  if (piece.type === 'Bking' && x === 0 && y === 2 && piece.x === 0 && piece.y === 4 && chessBoard[0][0] && chessBoard[0][0].type === 'Brook' ) {
+      if (!chessBoard[0][1] && !chessBoard[0][2] && !chessBoard[0][3]&& !isKingInCheck(piece.type,0,1) && !isKingInCheck(piece.type,0,2)&& !isKingInCheck(piece.type,0,3) ) {
+          return true;
+      }
+  }
   
     // Knight movement
     if (piece.type === 'Bknight' || piece.type === 'Wknight') {
@@ -186,15 +294,20 @@ export default function Board() {
     }
     return moves;
   };
-  
-  
+ 
 
   const renderPiece = (piece, x, y) => {
     if (!piece) return null;
     const PieceComponent = {
-      Bpawn, Wpawn, Brook, Wrook, Bbishop, Wbishop, Bknight, Wknight, Wqueen, Bqueen, Wking, Bking
+      Bpawn, Wpawn, Brook, Wrook, Bbishop, Wbishop, Bknight, Wknight, Wqueen, Bqueen, Wking, Bking,Bpawnmoved,Wpawnmoved,Brookmoved,Wrookmoved,Wkingmoved,Bkingmoved
     }[piece.type];
-    return <PieceComponent  x={x} y={y} onClick={() => handlePieceClick(x, y)} />;
+    return <PieceComponent    draggable="true"
+    x={x} y={y}  
+   
+
+   
+  
+    />;
   };
 
   const isHighlight = (x, y) => validMoves.some(move => move.x === x && move.y === y);
@@ -220,11 +333,17 @@ export default function Board() {
                       alignItems: 'center',
                       height: 'calc(100vw / 8)', // Set height based on viewport width
                       width: 'calc(100vw / 8)',  // Set width based on viewport width
-                      maxWidth: '60px',          // Limit maximum width to 80px
-                      maxHeight: '60px',   
+                      maxWidth: '72px',          // Limit maximum width to 80px
+                      maxHeight: '72px',   
                         // Limit maximum height to 80px
                     }}
                     onClick={() => handlePieceClick(rIndex, cIndex)}
+                   
+                   onDragStart={()=>{handlePieceClick(rIndex,cIndex)}}
+                  onDragOver={handlePieceDragOver}
+                   onDrop={() => handlePieceClick(rIndex, cIndex)}
+                  
+                
                   >
                     {renderPiece(piece, rIndex, cIndex)}
                   </div>
