@@ -76,7 +76,13 @@ Now all checks are even included along with check mates
 
 Day - 10 
 Today I created my chess game to multiplayer mode using socket.io
+
+
+
 https://blog.openreplay.com/building-a-chess-game-with-react/ taken reference from here
+
+
+
 integerated chat system 
 still en-passant is only remaining else all logic are done
 
