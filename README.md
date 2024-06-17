@@ -89,4 +89,13 @@ still en-passant is only remaining else all logic are done
 ![ezgif-4-6839049168](https://github.com/Ayush1234567434324/chess/assets/104828221/a926a8a1-9bbc-47da-a780-1afe073e0704)
 
 
+Day - 11 
+Finally my multiplayer game is working tho en passant is still missing now board is flipped for opponent.
+
+to connect my socket io backend globally i have used local tunnel 
+
+https://theboroer.github.io/localtunnel-www/
+
+here is simulation of my game.
+
 
