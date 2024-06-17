@@ -99,3 +99,7 @@ https://theboroer.github.io/localtunnel-www/
 here is simulation of my game.
 
 
+![ezgif-5-b12a69cd9e](https://github.com/Ayush1234567434324/chess/assets/104828221/1aaa6b70-4f9a-41a9-86a4-8e9f1266a95a)
+
+
+
