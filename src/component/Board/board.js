@@ -11,17 +11,24 @@ import Wqueen from "./Chess-pieces/white/Wqueen";
 import Bqueen from "./Chess-pieces/black/Bqueen";
 import { Wking, Wkingmoved } from "./Chess-pieces/white/Wking";
 import { Bking, Bkingmoved } from "./Chess-pieces/black/Bking";
-
-export default function Board() {
+import socket from "../../socket";
+export default function Board(props) {
   const n = 8;
   const m = 8;
-
+ 
   const [chessBoard, setChessBoard] = useState([]);
   const [selectedPiece, setSelectedPiece] = useState(null);
   const [validMoves, setValidMoves] = useState([]);
   const [player, setplayer] = useState("W");
   const [show, setshow] = useState(null);
   const [final, setfinal] = useState(0);
+
+
+
+
+
+
+
   useEffect(() => {
     const result = [];
     for (let i = 0; i < n; i++) {
@@ -71,7 +78,10 @@ export default function Board() {
   };
 
   const movePiece = (x, y) => {
-    if (player === selectedPiece.type[0]) {
+    if (
+      (player === 'B' && props.players === 0 && selectedPiece.type[0] === 'B') ||
+      (player === 'W' && props.players > 0 && selectedPiece.type[0] === 'W')
+    ) {
       if (isMoveValid(selectedPiece, x, y, chessBoard)) {
         // Create a new Audio object
         var audio = new Audio(
@@ -110,6 +120,11 @@ export default function Board() {
           setValidMoves([]);
           setplayer(player === "W" ? "B" : "W");
           setSelectedPiece(null);
+          if (chessBoard.length>0) {
+            console.log(props.room)
+        socket.emit('move', {roomId:props.room, move: newBoard ,player:(player==='W')?'B':'W'});
+           
+          }
           return;
         }
         if (
@@ -137,6 +152,11 @@ export default function Board() {
           setValidMoves([]);
           setplayer(player === "W" ? "B" : "W");
           setSelectedPiece(null);
+          if (chessBoard.length>0) {
+            console.log(props.room)
+        socket.emit('move', {roomId:props.room, move: newBoard ,player:(player==='W')?'B':'W'});
+           
+          }
           return;
         }
         if (
@@ -192,6 +212,11 @@ export default function Board() {
           setplayer(player === "W" ? "B" : "W");
 
           setSelectedPiece(null);
+          if (chessBoard.length>0) {
+            console.log(props.room)
+        socket.emit('move', {roomId:props.room, move: newBoard ,player:(player==='W')?'B':'W'});
+           
+          }
           return;
         }
 
@@ -231,6 +256,11 @@ export default function Board() {
           setChessBoard(newBoard);
           setValidMoves([]);
           setplayer(player === "W" ? "B" : "W");
+          if (chessBoard.length>0) {
+            console.log(props.room)
+        socket.emit('move', {roomId:props.room, move: newBoard ,player:(player==='W')?'B':'W'});
+           
+          }
         } else {
           var audioillegal = new Audio(
             `https://images.chesscomfiles.com/chess-themes/sounds/_WEBM_/default/illegal.webm`
@@ -618,17 +648,41 @@ export default function Board() {
       if (ans) setfinal(1);
     }
   }, [chessBoard, player]);
+  
+
+  
+   
+ 
+
+
+  useEffect(() => {
+    // Listen for incoming moves
+    const handleMove = (moveData) => {
+      // Update the chessboard state with the new move
+      console.log(moveData)
+      setChessBoard(moveData.move);
+      setplayer(moveData.player)
+    };
+  
+    socket.on('move', handleMove);
+  
+    // Clean up the event listener when the component unmounts
+    return () => {
+      socket.off('move', handleMove);
+    };
+  }, []);
+  
 
   return (
     <div
       className="responsive"
       style={{ display: "flex", width: "100%", alignItems: "center" }}
     >
-      <div>
+      <div style={{  transform:`${props.players===0?"rotateX(180deg)":"rotateX(0deg)"}`}}>
         {chessBoard.length > 0 &&
           chessBoard.map((row, rIndex) => {
             return (
-              <div className="row" key={rIndex}>
+              <div className="row" key={rIndex} >
                 {row.map((piece, cIndex) => {
                   return (
                     <div
@@ -652,6 +706,8 @@ export default function Board() {
                         width: "calc(100vw / 8)", // Set width based on viewport width
                         maxWidth: "72px", // Limit maximum width to 80px
                         maxHeight: "72px",
+                        transform:`${props.players===0?"rotateX(180deg)":"rotateX(0deg)"}`
+                        
                         // Limit maximum height to 80px
                       }}
                       onClick={() => handlePieceClick(rIndex, cIndex)}
@@ -674,6 +730,7 @@ export default function Board() {
                               position: "absolute",
                               right: "2%",
                               top: "20%",
+                              
                             }}
                           >
                             <button
