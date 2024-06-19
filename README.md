@@ -103,4 +103,5 @@ here is simulation of my game.
 
 
 
-
+Day - 12 
+Enpassant and stalemate conditions are still left but the game is playable i will implement it in future
