@@ -1,0 +1,80 @@
+
+
+.row {
+  display: flex;
+}
+
+.box {
+  width: 80px;
+  height: 80px;
+}
+
+.black {
+  background-color: #739552;
+}
+
+.white {
+  background-color: #EBECD0;
+}
+.highlighted {
+  position: relative;
+  
+}
+
+.highlighted::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 35%;
+  height: 35%;
+  background-color: rgba(0, 0, 0, 0.22);
+  border-radius: 50%;
+  pointer-events: none;
+}
+button
+{
+  width: 100px;
+  height:100px;
+}
+.highlighted-takes
+{
+  position: relative;
+}
+.highlighted-takes::before {
+  content: '';
+  position: absolute;
+
+  width: 95%;
+  height: 95%;
+  border: 8px solid rgba(0, 0, 0, 0.15); /* Set the border color and width */
+  border-radius: 50%; /* Make the border a circle */
+  pointer-events: none; /* Ensure the ring doesn't interfere with clicks */
+  box-sizing: border-box; /* Include border in element's dimensions */
+}
+
+  .responsive {
+      display: flex;
+      flex-direction: column !important;
+  }
+
+
+  @media (max-width: 830px) {
+    
+      button
+      {
+        width: 60px;
+        height:60px;
+      }
+    }
+  @media (max-width: 630px) {
+.box
+{
+  width: 50px !important;
+  height: 50px !important;
+  
+}
+
+
+  }
